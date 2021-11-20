@@ -1,0 +1,7 @@
+{% for post in posts %}
+<tr>
+    <td>{{ post.user.name }}</td>
+    <td>{{ post.title }}</td>
+    <td>{{ post.body }}</td>
+</tr>
+{% endfor %}

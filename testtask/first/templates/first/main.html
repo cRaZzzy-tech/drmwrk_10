@@ -1,0 +1,96 @@
+{% extends "layout/basic.html" %}
+{% load bootstrap4 %}
+{% load static %}
+
+{% block title %}
+    testTask
+{% endblock %}
+
+{% block content %}
+    <script src="{% static '/assets/js/jquery-3.3.1.min.js' %}"></script>
+    <script>
+        function filter(arg){
+            let url = $("#personForm").attr("filter");
+            let userId = document.getElementById('user_id').value;
+            $.ajax({
+                url: url,
+                data:{
+                    'clear': arg,
+                    'user': userId,
+                },
+                success: function (data) {
+                    $('#tbody').html(data);
+                }
+            });
+        };
+    </script>
+
+    <div method="post" id="personForm"
+         filter="{% url 'first:ajax_filter' %}"
+         novalidate>
+
+        <!-- Modal -->
+        <div class="modal fade" id="EditTransaction" tabindex="-1" aria-labelledby="ModalEditTransactionLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="ModalEditTransactionLabel">Фильтр</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">Х</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                        <p style="margin-left:20px; margin-right: 5px">Выберите пользователя</p>
+                        <select id="user_id" name="row">
+                              <option>---------</option>
+                              {% for user in users %}
+                                <option value="{{ user.id }}">{{ user.name }}</option>
+                              {% endfor %}
+                        </select>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" onclick="filter(true)" class="btn btn-secondary" data-bs-dismiss="modal">Сбросить</button>
+                        <button type="button" onclick="filter(false)" class="btn btn-primary" data-bs-dismiss="modal">Показать</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- EndModal -->
+
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-10" id="buttons">
+                <div style="margin:20px" class="btn-group-sm" id="btn_grp" role="group" aria-label="Basic example">
+                    <button type="submit" id="load" name="load" class="btn btn-sm btn-primary">Загрузить</button>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#EditTransaction">Фильтр</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10" style="">
+            <table  class="table table-bordered">
+                <thead>
+                    <td>Имя пользователя</td>
+                    <td>Тема поста</td>
+                    <td>Текст поста</td>
+                </thead>
+                <tbody id="tbody">
+                    {% for post in posts %}
+                    <tr>
+                        <td>{{ post.user.name }}</td>
+                        <td>{{ post.title }}</td>
+                        <td>{{ post.body }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
