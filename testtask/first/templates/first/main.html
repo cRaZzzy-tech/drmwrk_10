@@ -43,7 +43,7 @@
                         <select id="user_id" name="row">
                               <option>---------</option>
                               {% for user in users %}
-                                <option value="{{ user.user_id }}">{{ user.user_name }}</option>
+                                <option value="{{ user.id }}">{{ user.name }}</option>
                               {% endfor %}
                         </select>
                         </div>
