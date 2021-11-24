@@ -1,7 +1,7 @@
 from django.core import management
 from django.shortcuts import render
 
-from .models import Users, Posts, Address, Company
+from .models import Users, Posts
 
 def main(request):
     if request.POST:
