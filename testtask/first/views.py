@@ -17,8 +17,8 @@ def main(request):
 def ajax_filter(request):
     print('ajax_filter')
     if request.GET['clear'] == 'false':
-        posts = Posts.objects.filter(user = Users.objects.get(id=request.GET['user']))
+        posts = Posts.objects.select_related('user').filter(user = Users.objects.get(id=request.GET['user']))
     else:
-        posts = Posts.objects.all()
+        posts = Posts.objects.select_related('user').all()
     return render(request, 'first/ajax_filter.html', {'posts': posts})
 
